@@ -1,0 +1,41 @@
+// 1. Entities
+
+At the center of the onion are the Entities of the software, which constitutes the business logic of software. 
+An entity can be an object with methods, or it can be a set of data structures and functions, 
+they don't know anything about the outer layers and they don't have any dependency. They encapsulate the most general and high-level rules that the application would use.
+
+In simple words, Entities are the primary concepts of your business.
+
+When something external happens, Entities are the least likely to change. 
+A change to page navigation or security, for example, would not be expected to affect these objects. 
+The entity circle should not be affected by any operational changes to any application.
+
+// 2. Use Cases
+
+The Use Cases layer, which lies outside the Entities layer, contains login and rules related to the behavior and design of the system.
+
+In simple words, Use Cases are interactions between Entities. For example, suppose we are in our Social Media application example. 
+In that case, we can have a Use Case like user posts, or in the OneFood application, a customer places an order.
+
+Changes to this layer should not affect the entities. Changes to externalities such as the database, user interface, or frameworks are unlikely to affect this layer.
+
+// 3. Interface Adapters
+
+The Interface Adapters or the Adapter layer holds the controllers, APIs, and gateways. 
+The Interface Adapters govern the flow of communication between external components and the system's back-end.
+In simple words, Interface Adapters are isolating our various Use Cases from the tools that we use. 
+
+
+// 4. Routes
+The /routes folder is where you can organize all of your different REST endpoints declarations.
+The file below exposes all available endpoints related to the Orders Entity:
+
+
+// 5. Frameworks and Drivers
+The Frameworks and Drivers, also known as the Infrastructure Layer, is the outermost layer that provides all necessary details about frameworks, drivers, 
+and tools such as Databases that we use to build our application. All the details of the system go in this layer.
+
+For example, in the case of the OneFood application, the engineering team used Express JS as the framework and MongoDB driver for Node JS as a database driver.
+
+The entry point to the entire application is the app.js file. This is where we use the Express JS framework. 
+You will see many import statements, initialization of Express server, using the routes middleware, and finally exporting the app module.

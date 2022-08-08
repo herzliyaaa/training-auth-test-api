@@ -1,0 +1,9 @@
+TODO: 
+
+[/] 1.Create CRUD API for customers, salesperson, customers
+[/] 2. Create function for Sales Invoice
+[/] 3. Create CRUD for mechanic, parts, service 
+[] 4. Create function in Service mechanic, Parts Used, Service Ticket 
+[] 5.Create Auth
+[] 6.Create Unit Testing using Jest/Mocha/Chai
+[] 7. Implement Clean Architecture
