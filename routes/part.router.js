@@ -8,7 +8,7 @@ const {
   deletePart,
   deleteAllParts,
   getPartsUsed,
-  getPartsUsedById,
+  getPartUsedById,
   addPartUsed
 } = require("../controllers/part.controller");
 

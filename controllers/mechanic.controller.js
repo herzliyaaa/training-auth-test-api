@@ -1,10 +1,13 @@
 const pool = require("../config/db.config");
 
 const getMechanics = (req, res) => {
-  pool.query("SELECT * FROM mechanics ORDER BY mechanic_id DESC", (error, results) => {
-    if (error) throw error;
-    res.status(200).json(results.rows);
-  });
+  pool.query(
+    "SELECT * FROM mechanics ORDER BY mechanic_id DESC",
+    (error, results) => {
+      if (error) throw error;
+      res.status(200).json(results.rows);
+    }
+  );
 };
 
 const getMechanicById = (req, res) => {
@@ -20,13 +23,15 @@ const getMechanicById = (req, res) => {
 };
 
 const addMechanic = (req, res) => {
-  const { firstname, middlename, lastname} = req.body;
+  const { firstname, middlename, lastname } = req.body;
   pool.query(
     "INSERT INTO mechanics (firstname, middlename, lastname) VALUES ($1, $2, $3)",
     [firstname, middlename, lastname],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message: "Mechanic Created Successfully!", data: req.body});
+      res
+        .status(200)
+        .json({ message: "Mechanic Created Successfully!", data: req.body });
     }
   );
 };
@@ -39,7 +44,7 @@ const editMechanic = (req, res) => {
     [firstname, middlename, lastname, id],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message:"Mechanic Updated Successfully!"});
+      res.status(200).json({ message: "Mechanic Updated Successfully!" });
     }
   );
 };
@@ -61,13 +66,50 @@ const deleteAllMechanics = (req, res) => {
     if (error) {
       res.status(400).json(error.message);
     }
-    res
-        .status(200)
-        .json({ message: "All Mechanics were deleted!!"});
+    res.status(200).json({ message: "All Mechanics were deleted!!" });
   });
 };
 
+//service mechanics
 
+const getServiceMechanics = (req, res) => {
+  pool.query(
+    "SELECT * FROM service_mechanics ORDER BY service_mechanic_id DESC",
+    (error, results) => {
+      if (error) throw error;
+      res.status(200).json(results.rows);
+    }
+  );
+};
+
+const getServiceMechanicById = (req, res) => {
+  const id = req.params.id;
+  pool.query(
+    "SELECT * FROM service_mechanics WHERE service_mechanic_id = $1",
+    [id],
+    (error, results) => {
+      if (error) throw error;
+      res.status(200).json(results.rows);
+    }
+  );
+};
+
+const addServiceMechanic = (req, res) => {
+  const { mechanic_id, service_id, service_ticket_id, hours, comment, rate } =
+    req.body;
+  pool.query(
+    "INSERT INTO service_mechanics (mechanic_id, service_id, service_ticket_id, hours, comment, rate) VALUES ($1, $2, $3, $4, $5, $6)",
+    [mechanic_id, service_id, service_ticket_id, hours, comment, rate],
+    (error, results) => {
+      if (error) throw error;
+      res
+        .status(200)
+        .json({ message: "Mechanic Created Successfully!", data: req.body });
+    }
+  );
+};
+
+// extras ....
 const getTotalMechanics = (req, res) => {
   pool.query("SELECT COUNT(mechanic_id) FROM mechanics", (error, results) => {
     if (error) throw error;
@@ -82,5 +124,8 @@ module.exports = {
   editMechanic,
   deleteMechanic,
   deleteAllMechanics,
+  addServiceMechanic,
+  getServiceMechanicById,
+  getServiceMechanics,
   getTotalMechanics,
 };
