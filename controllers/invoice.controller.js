@@ -7,17 +7,39 @@ const pool = require("../config/db.config");
 const addSalesInvoice = (req, res) => {
   const { invoice_number, car_id, customer_id, salesperson_id } = req.body;
   pool.query(
-    "INSERT INTO sales_invoice (invoice_number, transaction_date, car_id, customer_id, salesperson_id) VALUES ($1, localtimestamp, $3, $4 , $5)",
+    "INSERT INTO sales_invoice (invoice_number, car_id, customer_id, salesperson_id, transaction_date) VALUES ($1, $2, $3 , $4, localtimestamp )",
     [invoice_number, car_id, customer_id, salesperson_id],
     (error, results) => {
       if (error) {
-        res.json("Error! huehue")
+        res.status(500).json(error);
       };
-      res.status(200).json("Sales Transaction Successful!");
+      res.status(200).json({ message: "Items Created Successfully!", data: req.body });
     }
   );
 }
 
+const getSalesInvoices = (req, res) => {
+  pool.query("SELECT * FROM sales_invoice ORDER BY invoice_id DESC", (error, results) => {
+    if (error) {
+      res.status(400).json(error.message);
+    }
+    res.status(200).json(results.rows);
+  });
+};
+
+const getInvoiceById = (req, res) => {
+  const invoice_id = req.params.id;
+  pool.query(
+    "SELECT * FROM sales_invoice WHERE invoice_id = $1",
+    [invoice_id],
+    (error, results) => {
+      if (error) {
+        res.status(400).json(error.message);
+      }
+      res.status(200).json({ message: `invoice_id  ${invoice_id}`, data: results.rows });
+    }
+  );
+};
 
 
 // const getTotalDailySales = (req, res) => {
@@ -43,7 +65,9 @@ const addSalesInvoice = (req, res) => {
 
 
 module.exports = {
-  addSalesInvoice
+  addSalesInvoice,
+  getSalesInvoices,
+  getInvoiceById
   // getTotalDailySales,
   // getWeeklyRevenue
   // getWeeklyCustomers,
