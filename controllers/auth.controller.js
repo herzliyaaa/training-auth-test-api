@@ -11,7 +11,7 @@ const userLogin = async (req, res) => {
   if (isUser.rows[0]) {
     res.status(200).json(isUser.rows[0]);
   } else {
-    res.status(400).json("No such user found");
+    res.status(400).json("No user found");
   }
 };
 
@@ -19,7 +19,7 @@ const registerUser = (req, res) => {
   const { email, password, firstname, lastname } = req.body;
 
   pool.query(
-    "INSERT INTO users (email, password, firstname, lastname) VALUES ($1, $2, $3, $4 ) RETURNING *",
+    "INSERT INTO users (email, password, firstname, lastname, created_at) VALUES ($1, $2, $3, $4 , current_timestamp ) RETURNING *",
     [email, password, firstname, lastname],
 
     (error, results) => {
@@ -32,7 +32,10 @@ const registerUser = (req, res) => {
       }
       res
         .status(200)
-        .json({ message: "User Registered Successfully!", data: results.rows[0] });
+        .json({
+          message: "User Registered Successfully!",
+          data: results.rows[0],
+        });
     }
   );
 };
@@ -55,15 +58,16 @@ const getUserById = (req, res) => {
       if (error) {
         res.status(400).json(error.message);
       }
-      res.status(200).json({ message: `User Details of ${user_id}:`, data: results.rows });
+      res
+        .status(200)
+        .json({ message: `User Details of ${user_id}:`, data: results.rows });
     }
   );
 };
-
 
 module.exports = {
   registerUser,
   userLogin,
   getUsers,
-  getUserById
+  getUserById,
 };
