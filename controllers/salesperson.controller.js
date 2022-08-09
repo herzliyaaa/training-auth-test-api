@@ -22,11 +22,11 @@ const getSalespersonById = (req, res) => {
 const addSalesperson = (req, res) => {
   const { firstname, middlename, lastname} = req.body;
   pool.query(
-    "INSERT INTO salespersons (firstname, middlename, lastname) VALUES ($1, $2, $3)",
+    "INSERT INTO salespersons (firstname, middlename, lastname) VALUES ($1, $2, $3) RETURNING *",
     [firstname, middlename, lastname],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message: "Salesperson Created Successfully!", data: req.body});
+      res.status(200).json({ message: "Salesperson Created Successfully!", data: results.rows[0]});
     }
   );
 };

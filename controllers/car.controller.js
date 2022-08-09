@@ -26,7 +26,7 @@ const getCarById = (req, res) => {
 const addCar = (req, res) => {
   const { serial_number, make, model, color, year, car_for_sale } = req.body;
   pool.query(
-    "INSERT INTO cars (serial_number, make, model, color, year, car_for_sale) VALUES ($1, $2, $3, $4 , $5 , $6)",
+    "INSERT INTO cars (serial_number, make, model, color, year, car_for_sale) VALUES ($1, $2, $3, $4 , $5 , $6) RETURNING *",
     [serial_number, make, model, color, year, car_for_sale],
     (error, results) => {
       if (error) {
@@ -34,7 +34,7 @@ const addCar = (req, res) => {
       }
       res
         .status(200)
-        .json({ message: "Car Created Successfully!", data: req.body });
+        .json({ message: "Car Created Successfully!", data: results.rows[0] });
     }
   );
 };
@@ -51,7 +51,7 @@ const editCar = (req, res) => {
       }
       res
         .status(200)
-        .json({ message: "Car Updated Successfully!", data: req.body });
+        .json({ message: "Car Updated Successfully!", data: results.rows[0] });
     }
   );
 };

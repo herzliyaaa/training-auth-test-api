@@ -25,13 +25,13 @@ const getMechanicById = (req, res) => {
 const addMechanic = (req, res) => {
   const { firstname, middlename, lastname } = req.body;
   pool.query(
-    "INSERT INTO mechanics (firstname, middlename, lastname) VALUES ($1, $2, $3)",
+    "INSERT INTO mechanics (firstname, middlename, lastname) VALUES ($1, $2, $3) RETURNING *",
     [firstname, middlename, lastname],
     (error, results) => {
       if (error) throw error;
       res
         .status(200)
-        .json({ message: "Mechanic Created Successfully!", data: req.body });
+        .json({ message: "Mechanic Created Successfully!", data: results.rows[0] });
     }
   );
 };

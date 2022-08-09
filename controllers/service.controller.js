@@ -22,11 +22,11 @@ const getServiceById = (req, res) => {
 const addService = (req, res) => {
   const { service_name, hourly_rate} = req.body;
   pool.query(
-    "INSERT INTO services (service_name, hourly_rate) VALUES ($1, $2)",
+    "INSERT INTO services (service_name, hourly_rate) VALUES ($1, $2) RETURNING *",
     [service_name, hourly_rate],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message: "Service Created Successfully!", data: req.body});
+      res.status(200).json({ message: "Service Created Successfully!", data: results.rows[0]});
     }
   );
 };

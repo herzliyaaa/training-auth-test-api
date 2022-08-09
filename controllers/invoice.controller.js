@@ -7,13 +7,13 @@ const pool = require("../config/db.config");
 const addSalesInvoice = (req, res) => {
   const { invoice_number, car_id, customer_id, salesperson_id } = req.body;
   pool.query(
-    "INSERT INTO sales_invoice (invoice_number, car_id, customer_id, salesperson_id, transaction_date) VALUES ($1, $2, $3 , $4, localtimestamp )",
+    "INSERT INTO sales_invoice (invoice_number, car_id, customer_id, salesperson_id, transaction_date) VALUES ($1, $2, $3 , $4, localtimestamp ) RETURNING *",
     [invoice_number, car_id, customer_id, salesperson_id],
     (error, results) => {
       if (error) {
         res.status(500).json(error);
       };
-      res.status(200).json({ message: "Items Created Successfully!", data: req.body });
+      res.status(200).json({ message: "Items Created Successfully!", data: results.rows[0] });
     }
   );
 }

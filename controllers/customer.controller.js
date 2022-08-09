@@ -22,11 +22,11 @@ const getCustomerById = (req, res) => {
 const addCustomer = (req, res) => {
   const { firstname, middlename, lastname, address, contact } = req.body;
   pool.query(
-    "INSERT INTO customers (firstname, middlename, lastname, address, contact) VALUES ($1, $2, $3, $4, $5)",
+    "INSERT INTO customers (firstname, middlename, lastname, address, contact) VALUES ($1, $2, $3, $4, $5) RETURNING *",
     [firstname, middlename, lastname, address, contact],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message: "Customer Created Successfully!", data: req.body});
+      res.status(200).json({ message: "Customer Created Successfully!", data: results.rows[0]});
     }
   );
 };

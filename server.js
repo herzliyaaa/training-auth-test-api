@@ -13,7 +13,7 @@ const ticketRoutes = require("./routes/ticket.router");
 const mechanicRoutes = require("./routes/mechanic.router");
 const serviceRoutes = require("./routes/service.router");
 const partRoutes = require("./routes/part.router");
-// const authRoutes = require("./routes/auth.router");
+const authRoutes = require("./routes/auth.router");
 
 const app = express();
 
@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
   res.json({ message: "My naevis we love you!" });
 });
 
-// app.use(authRoutes);
+app.use(authRoutes);
 app.use(salespersonRoutes);
 app.use(customerRoutes);
 app.use(carRoutes);

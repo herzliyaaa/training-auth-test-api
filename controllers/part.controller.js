@@ -26,7 +26,7 @@ const getPartById = (req, res) => {
 const addPart = (req, res) => {
   const { part_number, description, purchase_price, retail_price } = req.body;
   pool.query(
-    "INSERT INTO parts (part_number, description, purchase_price, retail_price) VALUES ($1, $2, $3, $4 )",
+    "INSERT INTO parts (part_number, description, purchase_price, retail_price) VALUES ($1, $2, $3, $4 ) RETURNING *",
     [part_number, description, purchase_price, retail_price],
     (error, results) => {
       if (error) {
@@ -51,7 +51,7 @@ const editPart = (req, res) => {
       }
       res
         .status(200)
-        .json({ message: "Part Updated Successfully!", data: req.body });
+        .json({ message: "Part Updated Successfully!", data: results.rows[0] });
     }
   );
 };

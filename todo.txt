@@ -4,7 +4,8 @@ TODO:
 [/] 2. Create function for Sales Invoice
 [/] 3. Create CRUD for mechanic, parts, service 
 [/] 4. Create function in Service mechanic, Parts Used, Service Ticket 
-[] 5. Manual Testing of API using POSTMAN
-[] 6.Create Auth
-[] 7.Create Unit Testing using Jest/Mocha/Chai
-[] 8. Implement Clean Architecture
+[/] 5. Manual Testing of API using POSTMAN
+[/] 6.Create Basic Auth
+[] 7. Brcypt in Auth
+[] 8.Create Unit Testing using Jest/Mocha/Chai
+[] 9. Implement Clean Architecture

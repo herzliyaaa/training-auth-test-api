@@ -3,7 +3,7 @@ const pool = require("../config/db.config");
 const addServiceTicket = (req, res) => {
   const {service_ticket_number, date_received, comments, date_returned, car_id, customer_id } = req.body;
   pool.query(
-    "INSERT INTO service_ticket (service_ticket_number, date_received, comments, date_returned, car_id, customer_id) VALUES ($1, $2, $3 , $4, $5, $6 )",
+    "INSERT INTO service_ticket (service_ticket_number, date_received, comments, date_returned, car_id, customer_id) VALUES ($1, $2, $3 , $4, $5, $6 ) RETURNING *",
     [service_ticket_number, date_received, comments, date_returned, car_id, customer_id],
     (error, results) => {
       if (error) {
@@ -11,7 +11,7 @@ const addServiceTicket = (req, res) => {
       }
       res
         .status(200)
-        .json({ message: "Items Created Successfully!", data: req.body });
+        .json({ message: "Items Created Successfully!", data: results.rows[0] });
     }
   );
 };
