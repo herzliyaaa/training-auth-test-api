@@ -54,8 +54,6 @@ CREATE TABLE IF NOT EXISTS "parts" (
     "retail_price" NUMERIC);
 
 
-
-
 CREATE TABLE IF NOT EXISTS "service_ticket" (
     "service_ticket_id" SERIAL PRIMARY KEY,
     "service_ticket_number" VARCHAR(150),
@@ -83,6 +81,15 @@ CREATE TABLE IF NOT EXISTS "service_mechanic" (
     "comment" VARCHAR(250),
     "rate" NUMERIC
 );
+
+
+CREATE TABLE IF NOT EXISTS "users"(
+    "user_id" SERIAL PRIMARY KEY,
+    "email" UNIQUE VARCHAR(100),
+    "password" VARCHAR(100),
+    "firstname" VARCHAR(100),
+    "lastname" VARCHAR(100));
+
 
 
 INSERT INTO cars (serial_number, make, model, color, year, car_for_sale) VALUES ('123hehe', 'Toyota', 'Vios', 'Red', '2021', 'Yes') RETURNING *;

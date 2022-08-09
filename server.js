@@ -1,6 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const bcrypt = require("bcrypt");
+
 const salespersonRoutes = require("./routes/salesperson.router");
 const customerRoutes = require("./routes/customer.router");
 const carRoutes = require("./routes/car.router");
@@ -18,9 +22,21 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
+
+app.use(session({
+  key: "user_id",
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: 1000*60*60
+  }
+}))
+
 
 app.get("/", (req, res) => {
   res.json({ message: "My naevis we love you!" });

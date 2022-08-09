@@ -92,7 +92,7 @@ const getTotalParts = (req, res) => {
 
 const getPartsUsed = (req, res) => {
   pool.query(
-    "SELECT * FROM parts_used ORDER BY part_used_id DESC",
+    "SELECT * FROM parts_used ORDER BY parts_used_id DESC",
     (error, results) => {
       if (error) {
         res.status(400).json(error.message);
@@ -105,7 +105,7 @@ const getPartsUsed = (req, res) => {
 const getPartUsedById = (req, res) => {
   const part_used_id = req.params.id;
   pool.query(
-    "SELECT * FROM parts_used WHERE part_used_id = $1",
+    "SELECT * FROM parts_used WHERE parts_used_id = $1",
     [part_used_id],
     (error, results) => {
       if (error) {

@@ -21,8 +21,8 @@ router.delete("/parts/delete-all", deleteAllParts);
 
 
 //parts used
-router.get("/parts-used", getPartsUsed);
-router.get("/parts-used/view/:id", getPartUsedById);
-router.post("/parts-used/add", addPartUsed);
+router.get("/parts_used", getPartsUsed);
+router.get("/parts_used/view/:id", getPartUsedById);
+router.post("/parts_used/add", addPartUsed);
 
 module.exports = router;
