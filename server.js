@@ -21,26 +21,28 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
-app.use(cors(
+app.use(
+  cors()
   // {
   //   origin: "http://localhost:3030"
   // }
-));
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
 
-app.use(session({
-  key: "user_id",
-  secret: process.env.SECRET_KEY,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    expires: 1000*60*60
-  }
-}))
-
+app.use(
+  session({
+    key: "user_id",
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 1000 * 60 * 60,
+    },
+  })
+);
 
 app.get("/", (req, res) => {
   res.json({ message: "My naevis we love you!" });

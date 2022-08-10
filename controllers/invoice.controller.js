@@ -1,7 +1,3 @@
-
-//invoice
-//create an invoice (one invoice per car and salesperson)
-
 const pool = require("../config/db.config");
 
 const addSalesInvoice = (req, res) => {
@@ -12,19 +8,27 @@ const addSalesInvoice = (req, res) => {
     (error, results) => {
       if (error) {
         res.status(500).json(error);
-      };
-      res.status(200).json({ message: "Items Created Successfully!", data: results.rows[0] });
+      }
+      res
+        .status(200)
+        .json({
+          message: "Items Created Successfully!",
+          data: results.rows[0],
+        });
     }
   );
-}
+};
 
 const getSalesInvoices = (req, res) => {
-  pool.query("SELECT * FROM sales_invoice ORDER BY invoice_id DESC", (error, results) => {
-    if (error) {
-      res.status(400).json(error.message);
+  pool.query(
+    "SELECT * FROM sales_invoice ORDER BY invoice_id DESC",
+    (error, results) => {
+      if (error) {
+        res.status(400).json(error.message);
+      }
+      res.status(200).json(results.rows);
     }
-    res.status(200).json(results.rows);
-  });
+  );
 };
 
 const getInvoiceById = (req, res) => {
@@ -36,11 +40,12 @@ const getInvoiceById = (req, res) => {
       if (error) {
         res.status(400).json(error.message);
       }
-      res.status(200).json({ message: `invoice_id  ${invoice_id}`, data: results.rows });
+      res
+        .status(200)
+        .json({ message: `invoice_id  ${invoice_id}`, data: results.rows });
     }
   );
 };
-
 
 // const getTotalDailySales = (req, res) => {
 //   pool.query(
@@ -62,12 +67,10 @@ const getInvoiceById = (req, res) => {
 //   );
 // };
 
-
-
 module.exports = {
   addSalesInvoice,
   getSalesInvoices,
-  getInvoiceById
+  getInvoiceById,
   // getTotalDailySales,
   // getWeeklyRevenue
   // getWeeklyCustomers,

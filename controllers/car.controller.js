@@ -23,28 +23,72 @@ const getCarById = (req, res) => {
   );
 };
 
+// original car controller
+// const addCar = (req, res) => {
+//   const { serial_number, make, model, color, year, car_for_sale } = req.body;
+//   pool.query(
+//     "INSERT INTO cars (serial_number, make, model, color, year, car_for_sale) VALUES ($1, $2, $3, $4 , $5 , $6) RETURNING *",
+//     [serial_number, make, model, color, year, car_for_sale],
+//     (error, results) => {
+//       if (error) {
+//         res.status(400).json(error.message);
+//       }
+//       res
+//         .status(200)
+//         .json({ message: "Car Created Successfully!", data: results.rows[0] });
+//     }
+//   );
+// };
+
+//with upload
+
 const addCar = (req, res) => {
   const { serial_number, make, model, color, year, car_for_sale } = req.body;
+
+  const url = req.protocol + "://" + req.get("host");
+  const image_file = url + "/uploads/" + req.file.filename;
+
   pool.query(
-    "INSERT INTO cars (serial_number, make, model, color, year, car_for_sale) VALUES ($1, $2, $3, $4 , $5 , $6) RETURNING *",
-    [serial_number, make, model, color, year, car_for_sale],
+    "INSERT INTO cars (serial_number, make, model, color, year, car_for_sale, image_file) VALUES ($1, $2, $3, $4 , $5 , $6, $7 ) RETURNING *",
+    [serial_number, make, model, color, year, car_for_sale, image_file],
     (error, results) => {
       if (error) {
         res.status(400).json(error.message);
       }
-      res
-        .status(200)
-        .json({ message: "Car Created Successfully!", data: results.rows[0] });
+      res.status(200).json({
+        message: "Car Created Successfully!",
+        data: results.rows,
+      });
     }
   );
 };
 
+// const editCar = (req, res) => {
+//   const car_id = req.params.id;
+//   const { serial_number, make, model, color, year, car_for_sale } = req.body;
+//   pool.query(
+//     "UPDATE cars SET serial_number = $1, make = $2, model = $3, color = $4, year = $5 , car_for_sale = $6 WHERE car_id = $7",
+//     [serial_number, make, model, color, year, car_for_sale, car_id],
+//     (error, results) => {
+//       if (error) {
+//         res.status(400).json(error.message);
+//       }
+//       res
+//         .status(200)
+//         .json({ message: "Car Updated Successfully!", data: results.rows[0] });
+//     }
+//   );
+// };
+
 const editCar = (req, res) => {
   const car_id = req.params.id;
+  const url = req.protocol + "://" + req.get("host");
+  const image_file = url + "/uploads/" + req.file.filename;
+
   const { serial_number, make, model, color, year, car_for_sale } = req.body;
   pool.query(
-    "UPDATE cars SET serial_number = $1, make = $2, model = $3, color = $4, year = $5 , car_for_sale = $6 WHERE car_id = $7",
-    [serial_number, make, model, color, year, car_for_sale, car_id],
+    "UPDATE cars SET serial_number = $1, make = $2, model = $3, color = $4, year = $5 , car_for_sale = $6, image_file = $7 WHERE car_id = $8 RETURNING *",
+    [serial_number, make, model, color, year, car_for_sale, image_file, car_id],
     (error, results) => {
       if (error) {
         res.status(400).json(error.message);

@@ -9,7 +9,6 @@ chai.use(chaiHttp);
 
 // parent block
 describe("Customers API", () => {
-  
   describe("Test GET route /customers", () => {
     it("It should return all customers", (done) => {
       chai
@@ -23,7 +22,6 @@ describe("Customers API", () => {
         });
     });
   });
-
 
   describe("Test GET/:id route", () => {
     it("it should get an customer by the given id", (done) => {
@@ -41,7 +39,7 @@ describe("Customers API", () => {
   describe("Test POST route", () => {
     it("it should post customer", (done) => {
       const newCustomer = {
-        firstname: `herzlia ${Math.random().toString(36).slice(2)}`,
+        firstname: `herzlia`,
         middlename: "ramos",
         lastname: "barangan",
         address: Math.random().toString(36).slice(2),
@@ -68,7 +66,7 @@ describe("Customers API", () => {
   });
 
   describe("Test PUT route", () => {
-    it("it should update an item", (done) => {
+    it("it should update an customer", (done) => {
       const customer_id = "218";
       const updateCustomer = {
         firstname: "herzlia",
@@ -94,11 +92,11 @@ describe("Customers API", () => {
   });
 
   describe("Test DELETE/:id route", () => {
-    it("it should delete an item by the given id", (done) => {
-      const barcode = "101469";
+    it("it should delete an customer by the given id", (done) => {
+      const customer_id = "101469";
       chai
         .request(API)
-        .delete(`/items/delete/${barcode}`)
+        .delete(`/customers/delete/${customer_id}`)
         .end((err, res) => {
           res.should.have.status(200);
           done();
@@ -106,3 +104,5 @@ describe("Customers API", () => {
     });
   });
 });
+
+
