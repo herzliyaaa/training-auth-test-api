@@ -1,4 +1,7 @@
 const pool = require("../config/db.config");
+const bcrypt = require("bcrypt");
+const jwtGenerator = require("../utils/jwtgenerator");
+const authorization = require("../middleware/auth.middleware");
 
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -15,29 +18,34 @@ const userLogin = async (req, res) => {
   }
 };
 
-const registerUser = (req, res) => {
+const registerUser = async (req, res) => {
   const { email, password, firstname, lastname } = req.body;
 
-  pool.query(
-    "INSERT INTO users (email, password, firstname, lastname, created_at) VALUES ($1, $2, $3, $4 , current_timestamp ) RETURNING *",
-    [email, password, firstname, lastname],
+  const saltRound = 10;
+  const salt = await bcrypt.genSalt(saltRound);
+  const bcryptPassword = await bcrypt.hash(password, salt);
 
-    (error, results) => {
-      if (error) {
-        res.status(400).json(error.message);
-      } else {
-        if (results.rows.length === 0) {
-          res.send(JSON.stringify({ error: "User not registered." }));
-        }
-      }
-      res
-        .status(200)
-        .json({
-          message: "User Registered Successfully!",
-          data: results.rows[0],
-        });
-    }
-  );
+  const register = await pool.query(
+    "INSERT INTO users (email, password, firstname, lastname, created_at) VALUES ($1, $2, $3, $4 , current_timestamp ) RETURNING *",
+    [email, bcryptPassword, firstname, lastname]);
+
+    const token = jwtGenerator(register.rows[0].user_id)
+    res.json({ token })
+
+    // (error, results) => {
+    //   if (error) {
+    //     res.status(400).json(error.message);
+    //   } else {
+    //     if (results.rows.length === 0) {
+    //       res.send(JSON.stringify({ error: "User not registered." }));
+    //     }
+    //   }
+    //   res.status(200).json({
+    //     message: "User Registered Successfully!",
+    //     data: results.rows[0],
+    //   });
+    // }
+  
 };
 
 const getUsers = (req, res) => {

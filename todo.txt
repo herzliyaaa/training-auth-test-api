@@ -6,6 +6,10 @@ TODO:
 [/] 4. Create function in Service mechanic, Parts Used, Service Ticket 
 [/] 5. Manual Testing of API using POSTMAN
 [/] 6.Create Basic Auth
+
+8/12/2022
 [] 7. Brcypt in Auth
 [] 8.Create Unit Testing using Jest/Mocha/Chai
+
+8/15/2022 Start to Implement Clean Architecture
 [] 9. Implement Clean Architecture
