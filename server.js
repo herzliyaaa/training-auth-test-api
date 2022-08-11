@@ -4,6 +4,7 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+const path = require('path');
 
 const salespersonRoutes = require("./routes/salesperson.router");
 const customerRoutes = require("./routes/customer.router");
@@ -48,6 +49,8 @@ app.get("/", (req, res) => {
   res.json({ message: "My naevis we love you!" });
 });
 
+
+
 app.use(authRoutes);
 app.use(salespersonRoutes);
 app.use(customerRoutes);
@@ -58,12 +61,24 @@ app.use(mechanicRoutes);
 app.use(serviceRoutes);
 app.use(partRoutes);
 
+app.use('/uploads', express.static(path.join('uploads')));
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+
 app.use(function (err, req, res, next) {
   if (err) {
     console.log(err);
-    res.sendStatus(400);
+    res.sendStatus(500);
   }
 });
+
+
 
 const PORT = process.env.PORT || 3000;
 

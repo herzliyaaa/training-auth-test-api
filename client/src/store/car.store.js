@@ -1,14 +1,23 @@
 export default {
   state: {
-    favorites: [],
+    cars: [],
   },
   mutations: {
-    UPDATE_FAVORITES(state, payload) {
-      state.favorites = payload;
+   ADD_CAR (state, payload) {
+      state.cars = payload;
     },
   },
   actions: {
-    addToFavorites(context, payload) {
+    editCar({commit}, payload) {
+      
+      const car = {
+        serial_number: payload.serial_number,
+        make: payload.make,
+        model: payload.model,
+        color: payload.color,
+        year: payload.year
+      }
+
       const favorites = context.state.favorites;
       favorites.push(payload);
       context.commit("UPDATE_FAVORITES", favorites);
