@@ -16,6 +16,24 @@ const addServiceTicket = (req, res) => {
   );
 };
 
+//add edit service ticket
+const editServiceTicket = (req, res) => {
+  const id = req.params.id;
+  const { service_ticket_number, date_received, comments, date_returned, car_id, customer_id  } = req.body;
+  pool.query(
+    "UPDATE service_ticket SET service_ticket_number = $1, date_received= $2, comments = $3, date_returned = $4, car_id = $5, customer_id = $6 WHERE service_ticket_id = $7 RETURNING *",
+    [service_ticket_number, date_received, comments, date_returned, car_id, customer_id , id],
+    (error, results) => {
+      if (error) throw error;
+      res.status(200).json({ message:"Service Ticket Updated Successfully!", data: results.rows});
+    }
+  );
+};
+
+
+
+
+
 const getServiceTickets = (req, res) => {
   pool.query(
     "SELECT * FROM service_ticket ORDER BY service_ticket_id DESC",
@@ -68,6 +86,7 @@ module.exports = {
   addServiceTicket,
   getServiceTickets,
   getServiceTicketById,
+  editServiceTicket
   // getTotalDailySales,
   // getWeeklyRevenue
   // getWeeklyCustomers,

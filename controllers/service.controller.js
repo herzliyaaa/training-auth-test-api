@@ -26,7 +26,7 @@ const addService = (req, res) => {
     [service_name, hourly_rate],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message: "Service Created Successfully!", data: results.rows[0]});
+      res.status(200).json({ message: "Service Created Successfully!", data: results.rows});
     }
   );
 };
@@ -35,11 +35,11 @@ const editService = (req, res) => {
   const id = req.params.id;
   const { service_name, hourly_rate } = req.body;
   pool.query(
-    "UPDATE services SET service_name = $1, hourly_rate= $2 WHERE service_id = $3",
+    "UPDATE services SET service_name = $1, hourly_rate= $2 WHERE service_id = $3 RETURNING *",
     [service_name, hourly_rate, id],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message:"Service Updated Successfully!"});
+      res.status(200).json({ message:"Service Updated Successfully!", data: results.rows});
     }
   );
 };

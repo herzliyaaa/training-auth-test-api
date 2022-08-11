@@ -12,7 +12,7 @@ const addSalesInvoice = (req, res) => {
       res
         .status(200)
         .json({
-          message: "Items Created Successfully!",
+          message: "Invoice Created Successfully!",
           data: results.rows[0],
         });
     }

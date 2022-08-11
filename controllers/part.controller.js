@@ -34,7 +34,7 @@ const addPart = (req, res) => {
       }
       res
         .status(200)
-        .json({ message: "Part Created Successfully!", data: req.body });
+        .json({ message: "Part Created Successfully!", data: results.rows });
     }
   );
 };
@@ -43,7 +43,7 @@ const editPart = (req, res) => {
   const part_id = req.params.id;
   const { part_number, description, purchase_price, retail_price } = req.body;
   pool.query(
-    "UPDATE parts SET part_number = $1, description = $2, purchase_price = $3, retail_price = $4 WHERE part_id = $5",
+    "UPDATE parts SET part_number = $1, description = $2, purchase_price = $3, retail_price = $4 WHERE part_id = $5 RETURNING *",
     [part_number, description, purchase_price, retail_price, part_id],
     (error, results) => {
       if (error) {
@@ -51,7 +51,7 @@ const editPart = (req, res) => {
       }
       res
         .status(200)
-        .json({ message: "Part Updated Successfully!", data: results.rows[0] });
+        .json({ message: "Part Updated Successfully!", data: results.rows});
     }
   );
 };
@@ -119,17 +119,17 @@ const getPartUsedById = (req, res) => {
 };
 
 const addPartUsed = (req, res) => {
-  const { part_id, service_ticket, number_used, price } = req.body;
+  const { part_id, service_ticket_id, number_used, price } = req.body;
   pool.query(
-    "INSERT INTO parts (part_id, service_ticket, number_used, price) VALUES ($1, $2, $3, $4 )",
-    [part_id, service_ticket, number_used, price],
+    "INSERT INTO parts_used (part_id, service_ticket_id, number_used, price) VALUES ($1, $2, $3, $4 ) RETURNING *",
+    [part_id, service_ticket_id, number_used, price],
     (error, results) => {
       if (error) {
         res.status(400).json(error.message);
       }
       res
         .status(200)
-        .json({ message: "Part Used Added Successfully!", data: req.body });
+        .json({ message: "Part Used Added Successfully!", data: results.rows });
     }
   );
 };

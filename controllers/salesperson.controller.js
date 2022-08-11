@@ -26,7 +26,7 @@ const addSalesperson = (req, res) => {
     [firstname, middlename, lastname],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message: "Salesperson Created Successfully!", data: results.rows[0]});
+      res.status(200).json({ message: "Salesperson Created Successfully!", data: results.rows});
     }
   );
 };
@@ -35,11 +35,11 @@ const editSalesperson = (req, res) => {
   const id = req.params.id;
   const { firstname, middlename, lastname } = req.body;
   pool.query(
-    "UPDATE salespersons SET firstname = $1, middlename = $2, lastname = $3 WHERE salesperson_id = $4",
+    "UPDATE salespersons SET firstname = $1, middlename = $2, lastname = $3 WHERE salesperson_id = $4 RETURNING *",
     [firstname, middlename, lastname, id],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message:"Salesperson Updated Successfully!"});
+      res.status(200).json({ message:"Salesperson Updated Successfully!", data: results.rows});
     }
   );
 };

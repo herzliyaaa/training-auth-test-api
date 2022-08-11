@@ -31,7 +31,7 @@ const addMechanic = (req, res) => {
       if (error) throw error;
       res
         .status(200)
-        .json({ message: "Mechanic Created Successfully!", data: results.rows[0] });
+        .json({ message: "Mechanic Created Successfully!", data: results.rows });
     }
   );
 };
@@ -40,11 +40,11 @@ const editMechanic = (req, res) => {
   const id = req.params.id;
   const { firstname, middlename, lastname } = req.body;
   pool.query(
-    "UPDATE mechanics SET firstname = $1, middlename = $2, lastname = $3 WHERE mechanic_id = $4",
+    "UPDATE mechanics SET firstname = $1, middlename = $2, lastname = $3 WHERE mechanic_id = $4 RETURNING *",
     [firstname, middlename, lastname, id],
     (error, results) => {
       if (error) throw error;
-      res.status(200).json({ message: "Mechanic Updated Successfully!" });
+      res.status(200).json({ message: "Mechanic Updated Successfully!", data: results.rows});
     }
   );
 };
@@ -98,13 +98,13 @@ const addServiceMechanic = (req, res) => {
   const { mechanic_id, service_id, service_ticket_id, hours, comment, rate } =
     req.body;
   pool.query(
-    "INSERT INTO service_mechanics (mechanic_id, service_id, service_ticket_id, hours, comment, rate) VALUES ($1, $2, $3, $4, $5, $6)",
+    "INSERT INTO service_mechanics (mechanic_id, service_id, service_ticket_id, hours, comment, rate) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
     [mechanic_id, service_id, service_ticket_id, hours, comment, rate],
     (error, results) => {
       if (error) throw error;
       res
         .status(200)
-        .json({ message: "Mechanic Created Successfully!", data: req.body });
+        .json({ message: "Mechanic Created Successfully!", data: results.rows });
     }
   );
 };
