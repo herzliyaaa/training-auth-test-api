@@ -13,7 +13,7 @@ const {
 router.get("/customers", getCustomers);
 router.get("/customers/view/:id", getCustomerById);
 router.post("/customers/add", addCustomer);
-router.put("/customers/edit/:id", editCustomer);
+router.patch("/customers/edit/:id", editCustomer);
 router.delete("/customers/delete/:id", deleteCustomer);
 router.delete("/customers/delete-all", deleteAllCustomers);
 

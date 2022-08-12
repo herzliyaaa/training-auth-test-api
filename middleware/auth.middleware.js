@@ -1,17 +1,17 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
-module.exports = async (req, res, next) => {
+module.exports = function(req, res, next) {
+  const token = req.header("token");
+  console.log(token);
+
+  if (!token) return res.status(401).json({ message: "Auth Error" });
+
   try {
-    const jwtToken = req.header('token')
-    if(!jwtToken) {
-      return  res.status(403).json('Not Authorized')
-    }
-    const payload = jwt.verify(jwtToken, process.env.JWTSECRET)
-    req.user = payload.user
-    next()
-
+    const decoded = jwt.verify(token, "randomString");
+    req.user = decoded.user;
+    next();
   } catch (err) {
-    console.error(err.message)
-    return res.status(403).json('Not Authorized')
+    console.error(err);
+    res.status(500).send({ message: "Invalid Token" });
   }
-}
+};
