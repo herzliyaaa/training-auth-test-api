@@ -49,8 +49,6 @@ app.get("/", (req, res) => {
   res.json({ message: "My naevis we love you!" });
 });
 
-
-
 app.use(authRoutes);
 app.use(salespersonRoutes);
 app.use(customerRoutes);
@@ -77,7 +75,6 @@ app.use(function (err, req, res, next) {
     res.sendStatus(500);
   }
 });
-
 
 
 const PORT = process.env.PORT || 3000;

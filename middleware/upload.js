@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     if (file.mimetype === "image/jpeg") {
       filetype = "jpg";
     }
-    const fileName = "car" + Date.now() + "." + filetype;
+    const fileName = "car-" + Date.now() + "." + filetype;
     cb(null, fileName);
   },
 });
