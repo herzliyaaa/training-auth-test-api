@@ -57,10 +57,6 @@ describe("Customers API", () => {
               const randomModel = faker.vehicle.model();
               const randomColor = faker.vehicle.color();
 
-              // const url = req.protocol + "://" + req.get("host");
-              // const image_file = "http://localhost:3000/uploads/";
-              // const url = "http://localhost:3000";
-
               var token = res.body.token;
               chai
                 .request(API)

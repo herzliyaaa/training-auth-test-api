@@ -36,7 +36,7 @@ describe("Customers API", () => {
 
           describe("Test GET/:id route", () => {
             it("it should get an customer by the given id", () => {
-              const customer_id = "3";
+              const customer_id = "1";
               var token = res.body.token;
               chai
                 .request(API)
@@ -92,7 +92,7 @@ describe("Customers API", () => {
                 middlename: "valdez",
                 lastname: "cruz",
                 address: "perez subdivision",
-                contact: "09268186409"
+                contact: "09268186409",
               };
 
               var token = res.body.token;
@@ -117,7 +117,6 @@ describe("Customers API", () => {
               var token = res.body.token;
               chai
                 .request(API)
-
                 .delete(`/customers/delete/${customer_id}`)
                 .set("Authorization", token)
                 .end((err, res) => {

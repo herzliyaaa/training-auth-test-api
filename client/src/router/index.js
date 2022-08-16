@@ -5,9 +5,18 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: "/login",
+      name: "LoginPage",
+      component: () => import("../views/login.vue"),
+    },
+
+    {
       path: "/dashboard",
       name: "Dashboard",
       component: DashboardPage,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/customers",
@@ -25,6 +34,18 @@ const router = createRouter({
       component: () => import("../views/salesperson.view.vue"),
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next();
+      return;
+    }
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;
