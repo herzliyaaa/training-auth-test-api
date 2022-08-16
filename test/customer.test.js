@@ -1,15 +1,12 @@
 var chai = require("chai");
 var chaiHttp = require("chai-http");
 var API = require("../server");
-
-// const API = `http://localhost:${process.env.PORT}`;
-
-var should = chai.should();
+chai.should();
 chai.use(chaiHttp);
 
-// parent block
-describe("Customers API", () => {
+const { faker } = require("@faker-js/faker");
 
+describe("Customers API", () => {
   describe("Login Test", () => {
     it("It should login a user and should return all the customers", (done) => {
       chai
@@ -22,106 +19,115 @@ describe("Customers API", () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property("token");
-          console.log('\x1b[33m%s\x1b[0m', "/login tested");
+          console.log("\x1b[33m%s\x1b[0m", "/login tested");
           var token = res.body.token;
 
           chai
             .request(API)
             .get("/customers")
-
-            // we set the auth header with our token
-            .set("token", token)
-
+            .set("Authorization", token)
             .end((err, res) => {
               res.should.have.status(200);
               res.body.should.be.a("array");
               res.body.length.should.not.be.equal(0);
-              console.log('\x1b[33m%s\x1b[0m', "/customers tested");
+              console.log("\x1b[33m%s\x1b[0m", "/customers tested");
               done();
             });
- 
-  // describe("Test GET/:id route", () => {
-  //   it("it should get an customer by the given id", (done) => {
-  //     const customer_id = "193";
-  //     chai
-  //       .request(API)
-  //       .get(`/customers/view/${customer_id}`)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         done();
-  //       });
-  //   });
-  // });
 
-  // describe("Test POST route", () => {
-  //   it("it should post customer", (done) => {
-  //     const newCustomer = {
-  //       firstname: `herzlia`,
-  //       middlename: "ramos",
-  //       lastname: "barangan",
-  //       address: Math.random().toString(36).slice(2),
-  //       contact: `09${Math.floor(Math.random() * 0934246543) + 300}`,
-  //     };
+          describe("Test GET/:id route", () => {
+            it("it should get an customer by the given id", () => {
+              const customer_id = "3";
+              var token = res.body.token;
+              chai
+                .request(API)
+                .get(`/customers/view/${customer_id}`)
+                .set("Authorization", token)
+                .end((err, res) => {
+                  res.should.have.status(200);
+                });
+            });
+          });
 
-  //     chai
-  //       .request(API)
-  //       .post("/customers/add")
-  //       .send(newCustomer)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.should.have
-  //           .property("message")
-  //           .to.equal("Customer Created Successfully!");
-  //         res.body.should.have
-  //           .property("data")
-  //           .which.is.an("object")
-  //           .and.has.property("lastname")
-  //           .to.deep.equal("barangan");
-  //         done();
-  //       });
-  //   });
-  // });
+          describe("Test POST route", () => {
+            it("it should post customer", () => {
+              const randomFirstName = faker.name.firstName();
+              const randomMiddleName = faker.name.middleName();
+              const randomLastName = faker.name.lastName();
+              const randomAddress = faker.address.street();
+              const randomContact = faker.phone.number("+63 #### ### ###");
 
-  // describe("Test PUT route", () => {
-  //   it("it should update an customer", (done) => {
-  //     const customer_id = "218";
-  //     const updateCustomer = {
-  //       firstname: "herzlia",
-  //       middlename: "valdez",
-  //       lastname: "cruz",
-  //       address: "perez",
-  //       contact: `09${Math.floor(Math.random() * 0934246543) + 300}`,
-  //     };
+              const newCustomer = {
+                firstname: randomFirstName,
+                middlename: randomMiddleName,
+                lastname: randomLastName,
+                address: randomAddress,
+                contact: randomContact,
+              };
 
-  //     chai
-  //       .request(API)
-  //       .put(`/customers/edit/${customer_id}`)
-  //       .send(updateCustomer)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.should.have
-  //           .property("message")
-  //           .to.equal("Customer Updated Successfully!");
+              var token = res.body.token;
+              chai
+                .request(API)
+                .post("/customers/add")
+                .set("Authorization", token)
+                .send(newCustomer)
+                .end((err, res) => {
+                  res.should.have.status(200);
+                  console.log("\x1b[33m%s\x1b[0m", "post customer tested");
+                  res.body.should.have
+                    .property("message")
+                    .to.equal("Customer Created Successfully!");
+                  res.body.should.have
+                    .property("data")
+                    .which.is.an("object")
+                    .and.has.property("lastname");
+                });
+            });
+          });
 
-  //         done();
-  //       });
-  //   });
-  // });
+          describe("Test PUT route", () => {
+            it("it should update an customer", () => {
+              const customer_id = "3";
+              const updateCustomer = {
+                firstname: "herzlia",
+                middlename: "valdez",
+                lastname: "cruz",
+                address: "perez subdivision",
+                contact: "09268186409"
+              };
 
-  // describe("Test DELETE/:id route", () => {
-  //   it("it should delete an customer by the given id", (done) => {
-  //     const customer_id = "101469";
-  //     chai
-  //       .request(API)
-  //       .delete(`/customers/delete/${customer_id}`)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         done();
-  //       });
-  //   });
-  // });
+              var token = res.body.token;
+              chai
+                .request(API)
+                .patch(`/customers/edit/${customer_id}`)
+                .set("Authorization", token)
+                .send(updateCustomer)
+                .end((err, res) => {
+                  res.should.have.status(200);
+                  console.log("\x1b[33m%s\x1b[0m", "edit customer tested");
+                  res.body.should.have
+                    .property("message")
+                    .to.equal("Customer Updated Successfully!");
+                });
+            });
+          });
 
-});
-});
-});
+          describe("Test DELETE/:id route", () => {
+            it("it should delete an customer by the given id", (done) => {
+              const customer_id = "3";
+              var token = res.body.token;
+              chai
+                .request(API)
+
+                .delete(`/customers/delete/${customer_id}`)
+                .set("Authorization", token)
+                .end((err, res) => {
+                  res.should.have.status(200);
+                  console.log("\x1b[33m%s\x1b[0m", "delete customer tested");
+                  done();
+                });
+            });
+          });
+        });
+    });
+  });
 });

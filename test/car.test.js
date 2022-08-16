@@ -1,110 +1,95 @@
-// var chai = require("chai");
-// var chaiHttp = require("chai-http");
-// var server = require("../server");
+var chai = require("chai");
+var chaiHttp = require("chai-http");
+var API = require("../server");
 
-// const API = `http://localhost:${process.env.PORT}`;
+chai.use(chaiHttp);
+chai.should();
 
-// const should = chai.should();
-// chai.use(chaiHttp);
+const { faker } = require("@faker-js/faker");
+const fs = require("fs");
 
-// // parent block
-// describe("Cars API", () => {
-//   describe("Test GET route /cars", () => {
-//     it("It should return all cars", (done) => {
-//       chai
-//         .request(API)
-//         .get("/cars")
-//         .end((err, res) => {
-//           res.should.have.status(200);
-//           res.body.should.be.a("array");
-//           res.body.length.should.not.be.equal(0);
-//           done();
-//         });
-//     });
-//   });
+describe("Customers API", () => {
+  describe("Login Test", () => {
+    it("It should login a user and should return all the cars", (done) => {
+      chai
+        .request(API)
+        .post("/login")
+        .send({
+          email: "john@smith.com",
+          password: "password",
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("token");
+          console.log("\x1b[33m%s\x1b[0m", "/login tested");
+          var token = res.body.token;
 
-//   describe("Test GET/:id route", () => {
-//     it("it should get an car by the given id", (done) => {
-//       const car_id = "193";
-//       chai
-//         .request(API)
-//         .get(`/cars/view/${car_id}`)
-//         .end((err, res) => {
-//           res.should.have.status(200);
-//           done();
-//         });
-//     });
-//   });
+          chai
+            .request(API)
+            .get("/cars")
+            .set("Authorization", token)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.be.a("array");
+              res.body.length.should.not.be.equal(0);
+              console.log("\x1b[33m%s\x1b[0m", "/cars tested");
+              done();
+            });
 
-//   describe("Test POST route", () => {
-//     it("it should post car", (done) => {
-//       const newCar = {
-//         serial_number: "13dsad",
-//         make: "honda",
-//         model: Math.random().toString(36).slice(2),
-//         color: "yellow",
-//         year: "2020",
-//         car_for_sale: "yes"
-//       };
+          describe("Test GET/:id route", () => {
+            it("it should get an car by the given id", () => {
+              const car_id = "3";
+              var token = res.body.token;
+              chai
+                .request(API)
+                .get(`/cars/view/${car_id}`)
+                .set("Authorization", token)
+                .end((err, res) => {
+                  res.should.have.status(200);
+                });
+            });
+          });
 
-//       chai
-//         .request(API)
-//         .post("/cars/add")
-//         .send(newCar)
-//         .end((err, res) => {
-//           res.should.have.status(200);
-//           res.body.should.have
-//             .property("message")
-//             .to.equal("Car Created Successfully!");
-//           res.body.should.have
-//             .property("data")
-//             .which.is.an("object")
-//             .and.has.property("make")
-//             .to.deep.equal("honda");
-//           done();
-//         });
-//     });
-//   });
+          describe("Test POST route", () => {
+            it("it should post car", (done) => {
+              const randomSerial = faker.vehicle.vrm();
+              const randomBrand = faker.vehicle.manufacturer();
+              const randomModel = faker.vehicle.model();
+              const randomColor = faker.vehicle.color();
 
-//   describe("Test PUT route", () => {
-//     it("it should update an car", (done) => {
-//       const car_id = "218";
-//       const updateCar = {
-//         serial_number: "13dsad",
-//         make: "honda",
-//         model: Math.random().toString(36).slice(2),
-//         color: "yellow",
-//         year: "2020",
-//         car_for_sale: "no"
-//       };
+                // const url = req.protocol + "://" + req.get("host");
+                const image_file = "http://localhost:3000/uploads/";
+                // const url = "http://localhost:3000";
 
-//       chai
-//         .request(API)
-//         .put(`/cars/edit/${car_id}`)
-//         .send(updateCar)
-//         .end((err, res) => {
-//           res.should.have.status(200);
-//           res.body.should.have
-//             .property("message")
-//             .to.equal("Car Updated Successfully!");
+                
 
-//           done();
-//         });
-//     });
-//   });
+              var token = res.body.token;
+              chai
+                .request(API)
+                .post("/cars/add")
+                .set("Authorization", token)
+                .set("Content-Type", "multipart/form-data")
+                .field("serial_number", randomSerial)
+                .field("make", randomBrand)
+                .field("model", randomModel)
+                .field("color", randomColor)
+                .field("year", "2022")
+                .field("car_for_sale", "yes")
 
-//   describe("Test DELETE/:id route", () => {
-//     it("it should delete an car by the given id", (done) => {
-//       const car_id = "101469";
-//       chai
-//         .request(API)
-//         .delete(`/cars/delete/${car_id}`)
-//         .end((err, res) => {
-//           res.should.have.status(200);
-//           done();
-//         });
-//     });
-//   });
-// });
+                .attach(
+                  "image_file", 
+                  fs.readFileSync("C:/Users/BFI/Downloads/test.jpg"),
+                  "http://localhost:3000/uploads/test1.jpg"
+                )
 
-
+                .end((err, res) => {
+                  res.should.have.status(200);
+                  console.log("\x1b[33m%s\x1b[0m", "Post Car Test Success");
+                  done();
+                });
+            });
+          });
+        });
+    });
+  });
+});

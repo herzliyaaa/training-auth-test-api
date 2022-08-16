@@ -35,11 +35,11 @@ const editCustomer = (req, res) => {
   const id = req.params.id;
   const { firstname, middlename, lastname, address, contact } = req.body;
   pool.query(
-    "UPDATE customers SET firstname = $1, middlename = $2, lastname = $3, address = $4, contact = $5 WHERE customer_id = $6",
+    "UPDATE customers SET firstname = $1, middlename = $2, lastname = $3, address = $4, contact = $5 WHERE customer_id = $6 RETURNING *",
     [firstname, middlename, lastname, address, contact, id],
     (error, results) => {
-      if (error) throw error;
-      res.status(200).json({ message:"Customer Updated Successfully!"});
+      if (error) throw new Error("error", error);
+      res.status(200).json({ message:"Customer Updated Successfully!", data: results.rows});
     }
   );
 };

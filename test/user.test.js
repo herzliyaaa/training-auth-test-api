@@ -1,4 +1,3 @@
-// import { faker } from '@faker-js/faker';
 
 const { faker } = require("@faker-js/faker");
 var chai = require("chai");
@@ -11,19 +10,21 @@ chai.use(chaiHttp);
 describe("AUTH API", () => {
   describe("Register Test", () => {
     it("It should register a user", (done) => {
-      const randomName = faker.name.fullName();
-
+      const randomFirstName = faker.name.firstName();
+      const randomLastName = faker.name.lastName();
+      const randomEmail = faker.internet.email();
       chai
         .request(API)
         .post("/register")
         .send({
-          firstname: randomName,
-          lastname: "Mikael",
-          email: "mikael@gmail.com",
-          password: "jyde",
+          firstname: randomFirstName,
+          lastname: randomLastName,
+          email: randomEmail,
+          password: "admin",
         })
         .end((err, res) => {
           res.should.have.status(200);
+          console.log("\x1b[33m%s\x1b[0m", "/register tested");
           done();
         });
     });
@@ -46,31 +47,15 @@ describe("AUTH API", () => {
 
           chai
             .request(API)
-            .get("/customers")
-
+            .get("/is-verified")
             // we set the auth header with our token
-            .set("token", token)
+            .set("Authorization", token)
 
             .end((err, res) => {
               res.should.have.status(200);
-              res.body.should.be.a("array");
-              res.body.length.should.not.be.equal(0);
-              console.log("\x1b[33m%s\x1b[0m", "/customers tested");
+              console.log("\x1b[33m%s\x1b[0m", "verified the user");
               done();
             });
-
-          // describe("Test GET/:id route", () => {
-          //   it("it should get an customer by the given id", (done) => {
-          //     const customer_id = "193";
-          //     chai
-          //       .request(API)
-          //       .get(`/customers/view/${customer_id}`)
-          //       .end((err, res) => {
-          //         res.should.have.status(200);
-          //         done();
-          //       });
-          //   });
-          // });
         });
     });
   });
