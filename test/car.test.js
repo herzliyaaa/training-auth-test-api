@@ -57,11 +57,9 @@ describe("Customers API", () => {
               const randomModel = faker.vehicle.model();
               const randomColor = faker.vehicle.color();
 
-                // const url = req.protocol + "://" + req.get("host");
-                const image_file = "http://localhost:3000/uploads/";
-                // const url = "http://localhost:3000";
-
-                
+              // const url = req.protocol + "://" + req.get("host");
+              // const image_file = "http://localhost:3000/uploads/";
+              // const url = "http://localhost:3000";
 
               var token = res.body.token;
               chai
@@ -77,7 +75,7 @@ describe("Customers API", () => {
                 .field("car_for_sale", "yes")
 
                 .attach(
-                  "image_file", 
+                  "image_file",
                   fs.readFileSync("C:/Users/BFI/Downloads/test.jpg"),
                   "http://localhost:3000/uploads/test1.jpg"
                 )
