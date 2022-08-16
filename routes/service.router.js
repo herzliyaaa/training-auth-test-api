@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const authorization = require("../middleware/auth.middleware");
 
 const {
   getServices,
@@ -9,11 +10,11 @@ const {
   deleteAllServices,
 } = require("../controllers/service.controller");
 
-router.get("/services", getServices);
-router.get("/services/view/:id", getServiceById);
-router.post("/services/add", addService);
-router.put("/services/edit/:id", editService);
-router.delete("/services/delete/:id", deleteService);
-router.delete("/services/delete-all", deleteAllServices);
+router.get("/services",  authorization, getServices);
+router.get("/services/view/:id",  authorization, getServiceById);
+router.post("/services/add",  authorization, addService);
+router.put("/services/edit/:id",  authorization, editService);
+router.delete("/services/delete/:id",  authorization, deleteService);
+router.delete("/services/delete-all",  authorization, deleteAllServices);
 
 module.exports = router;

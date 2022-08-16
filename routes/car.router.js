@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const authorization = require("../middleware/auth.middleware");
 const { upload } = require("../middleware/upload");
 
 const {
@@ -10,11 +11,11 @@ const {
   deleteAllCars,
 } = require("../controllers/Car.controller");
 
-router.get("/cars", getCars);
-router.get("/cars/view/:id", getCarById);
-router.post("/cars/add", upload.single("image_file"), addCar);
-router.put("/cars/edit/:id", upload.single("image_file"), editCar);
-router.delete("/cars/delete/:id", deleteCar);
-router.delete("/cars/delete-all", deleteAllCars);
+router.get("/cars",authorization, getCars);
+router.get("/cars/view/:id", authorization, getCarById);
+router.post("/cars/add", upload.single("image_file"), authorization, addCar);
+router.put("/cars/edit/:id", upload.single("image_file"), authorization, editCar);
+router.delete("/cars/delete/:id", authorization, deleteCar);
+router.delete("/cars/delete-all", authorization, deleteAllCars);
 
 module.exports = router;

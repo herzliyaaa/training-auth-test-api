@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const authorization = require("../middleware/auth.middleware");
 
 const {
   getCustomers,
@@ -10,12 +11,12 @@ const {
   getTotalCustomers
 } = require("../controllers/customer.controller");
 
-router.get("/customers", getCustomers);
-router.get("/customers/view/:id", getCustomerById);
-router.post("/customers/add", addCustomer);
-router.patch("/customers/edit/:id", editCustomer);
-router.delete("/customers/delete/:id", deleteCustomer);
-router.delete("/customers/delete-all", deleteAllCustomers);
+router.get("/customers", authorization, getCustomers);
+router.get("/customers/view/:id",  authorization, getCustomerById);
+router.post("/customers/add",  authorization, addCustomer);
+router.patch("/customers/edit/:id",  authorization, editCustomer);
+router.delete("/customers/delete/:id",  authorization, deleteCustomer);
+router.delete("/customers/delete-all",  authorization, deleteAllCustomers);
 
 
 // extras

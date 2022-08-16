@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const authorization = require("../middleware/auth.middleware")
 
 const {
   getSalespersons,
@@ -9,11 +10,11 @@ const {
   deleteAllSalespersons,
 } = require("../controllers/salesperson.controller");
 
-router.get("/salespersons", getSalespersons);
-router.get("/salespersons/view/:id", getSalespersonById);
-router.post("/salespersons/add", addSalesperson);
-router.put("/salespersons/edit/:id", editSalesperson);
-router.delete("/salespersons/delete/:id", deleteSalesperson);
-router.delete("/salespersons/delete-all", deleteAllSalespersons);
+router.get("/salespersons",  authorization, getSalespersons);
+router.get("/salespersons/view/:id",  authorization, getSalespersonById);
+router.post("/salespersons/add",  authorization, addSalesperson);
+router.put("/salespersons/edit/:id",  authorization, editSalesperson);
+router.delete("/salespersons/delete/:id",  authorization, deleteSalesperson);
+router.delete("/salespersons/delete-all",  authorization, deleteAllSalespersons);
 
 module.exports = router;

@@ -1,15 +1,16 @@
 const router = require("express").Router();
+const authorization = require("../middleware/auth.middleware");
 
 const {
   addServiceTicket,
   getServiceTickets,
   getServiceTicketById,
-  editServiceTicket
+  editServiceTicket,
 } = require("../controllers/ticket.controller");
 
-router.post("/service_tickets/add", addServiceTicket);
-router.get("/service_tickets", getServiceTickets);
-router.get("/service_tickets/view/:id", getServiceTicketById);
-router.put("/service_tickets/edit/:id", editServiceTicket);
+router.post("/service_tickets/add", authorization, addServiceTicket);
+router.get("/service_tickets", authorization, getServiceTickets);
+router.get("/service_tickets/view/:id", authorization, getServiceTicketById);
+router.put("/service_tickets/edit/:id", authorization, editServiceTicket);
 
 module.exports = router;

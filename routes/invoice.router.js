@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const authorization = require("../middleware/auth.middleware");
 
 const {
   addSalesInvoice,
@@ -6,8 +7,8 @@ const {
   getInvoiceById
 } = require("../controllers/invoice.controller");
 
-router.post("/sales_invoice/add", addSalesInvoice);
-router.get("/sales_invoice", getSalesInvoices);
-router.get("/sales_invoice/view/:id", getInvoiceById);
+router.post("/sales_invoice/add", authorization, addSalesInvoice);
+router.get("/sales_invoice",  authorization, getSalesInvoices);
+router.get("/sales_invoice/view/:id",  authorization, getInvoiceById);
 
 module.exports = router;

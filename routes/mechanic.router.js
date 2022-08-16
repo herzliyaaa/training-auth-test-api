@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const authorization = require("../middleware/auth.middleware");
 
 const {
   getMechanics,
@@ -12,15 +13,15 @@ const {
   addServiceMechanic,
 } = require("../controllers/mechanic.controller");
 
-router.get("/mechanics", getMechanics);
-router.get("/mechanics/view/:id", getMechanicById);
-router.post("/mechanics/add", addMechanic);
-router.put("/mechanics/edit/:id", editMechanic);
-router.delete("/mechanics/delete/:id", deleteMechanic);
-router.delete("/mechanics/delete-all", deleteAllMechanics);
+router.get("/mechanics", authorization, getMechanics);
+router.get("/mechanics/view/:id",  authorization, getMechanicById);
+router.post("/mechanics/add",  authorization, addMechanic);
+router.put("/mechanics/edit/:id",  authorization, editMechanic);
+router.delete("/mechanics/delete/:id",  authorization, deleteMechanic);
+router.delete("/mechanics/delete-all",  authorization, deleteAllMechanics);
 
-router.get("/service_mechanics", getServiceMechanics);
-router.get("/service_mechanics/view/:id", getServiceMechanicById);
-router.post("/service_mechanics/add", addServiceMechanic);
+router.get("/service_mechanics",  authorization, getServiceMechanics);
+router.get("/service_mechanics/view/:id",  authorization, getServiceMechanicById);
+router.post("/service_mechanics/add",  authorization, addServiceMechanic);
 
 module.exports = router;

@@ -4,52 +4,25 @@ const jwtGenerator = require("../utils/jwtgenerator");
 const authorization = require("../middleware/auth.middleware");
 
 const userLogin = async (req, res) => {
-  // const { email, password } = req.body;
-
-  // const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-
-  // if (user.rows.length === 0) {
-  //   res.status(401).json("Email or Password is Incorrect!");
-  // }
-
-  // const meow = user.rows[0].password;
-
-  // console.log(meow);
-  // const validPassword = await bcrypt.compareSync(
-  //   password,
-  //   meow
-  // );
-
-  // if (!validPassword) {
-  //   return res.status(400).json("Password is Incorrect!");
-  // }
-
-  // const token = jwtGenerator(user.rows[0].user_id);
-  // res.json(token);
-
-  // if (user.rows[0]) {
-  //   res.status(200).json(user.rows[0]);
-  // } else {
-  //   res.status(400).json("No user found");
-  // }
-
   const { email, password } = req.body;
 
   try {
     const user = await pool.query("Select * from users WHERE email = $1", [
       email,
     ]);
+
     if (user.rows.length === 0) {
       res.status(401).json("Password or Email is incorrect");
     }
     const validPassword = await bcrypt.compare(password, user.rows[0].password);
 
     if (!validPassword) {
-      return res.status(401).json("Password or Email is incorrect");
+      return res.status(401).json("Password is incorrect");
     }
 
     const token = jwtGenerator(user.rows[0].user_id);
-    res.json({ token: token, user: user.rows});
+
+    res.json({ token: token, user: user.rows });
   } catch (err) {
     res.status(500).send("Server Error");
   }
@@ -86,7 +59,7 @@ const registerUser = async (req, res) => {
         res.send(JSON.stringify({ error: "User not registered." }));
       }
     }
- 
+
     res.status(200).json({
       message: "User Registered Successfully!",
       data: results.rows[0],
@@ -94,16 +67,13 @@ const registerUser = async (req, res) => {
   };
 };
 
-
 const isVerified = async (req, res) => {
   try {
-    res.json(true)
+    res.json(true);
+  } catch (err) {
+    console.error(err.message);
   }
-  catch (err) {
-    console.error(err.message)
-  }
-}
-
+};
 
 const getUsers = (req, res) => {
   pool.query("SELECT * FROM users ORDER BY user_id DESC", (error, results) => {
