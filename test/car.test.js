@@ -21,7 +21,7 @@ describe("Customers API", () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property("token");
-          console.log("\x1b[33m%s\x1b[0m", "/login tested");
+          // console.log("\x1b[33m%s\x1b[0m", "/login tested");
           var token = res.body.token;
 
           chai
@@ -32,7 +32,7 @@ describe("Customers API", () => {
               res.should.have.status(200);
               res.body.should.be.a("array");
               res.body.length.should.not.be.equal(0);
-              console.log("\x1b[33m%s\x1b[0m", "/cars tested");
+              // console.log("\x1b[33m%s\x1b[0m", "/cars tested");
               done();
             });
 
@@ -73,12 +73,12 @@ describe("Customers API", () => {
                 .attach(
                   "image_file",
                   fs.readFileSync("C:/Users/BFI/Downloads/test.jpg"),
-                  "http://localhost:3000/uploads/test1.jpg"
+                  "http://localhost:3000/uploads/test.jpg"
                 )
 
                 .end((err, res) => {
                   res.should.have.status(200);
-                  console.log("\x1b[33m%s\x1b[0m", "Post Car Test Success");
+                  // console.log("\x1b[33m%s\x1b[0m", "Post Car Test Success");
                   done();
                 });
             });

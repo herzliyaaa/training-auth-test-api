@@ -18,3 +18,5 @@ TODO:
 
 
 [] 10. User Duplication Error Message
+
+  // "test": "nodemon --exec \"mocha -R min\"",

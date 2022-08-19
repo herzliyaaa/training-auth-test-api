@@ -8,6 +8,7 @@ const router = createRouter({
       path: "/login",
       name: "LoginPage",
       component: () => import("../views/login.vue"),
+      meta: { guest: true },
     },
 
     {
@@ -18,6 +19,7 @@ const router = createRouter({
         requiresAuth: true,
       },
     },
+
     {
       path: "/customers",
       name: "Customers",
@@ -42,7 +44,19 @@ router.beforeEach((to, from, next) => {
       next();
       return;
     }
-    next("/");
+    next("/login");
+  } else {
+    next();
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.guest)) {
+    if (store.getters.isLoggedIn) {
+      next("/dashboard");
+      return;
+    }
+    next();
   } else {
     next();
   }

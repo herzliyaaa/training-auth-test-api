@@ -8,7 +8,7 @@ const { faker } = require("@faker-js/faker");
 
 describe("Customers API", () => {
   describe("Login Test", () => {
-    it("It should login a user and should return all the customers", (done) => {
+    it("It should login a user and should return all the customers", () => {
       chai
         .request(API)
         .post("/login")
@@ -19,7 +19,6 @@ describe("Customers API", () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property("token");
-          console.log("\x1b[33m%s\x1b[0m", "/login tested");
           var token = res.body.token;
 
           chai
@@ -30,13 +29,11 @@ describe("Customers API", () => {
               res.should.have.status(200);
               res.body.should.be.a("array");
               res.body.length.should.not.be.equal(0);
-              console.log("\x1b[33m%s\x1b[0m", "/customers tested");
-              done();
             });
 
           describe("Test GET/:id route", () => {
             it("it should get an customer by the given id", () => {
-              const customer_id = "1";
+              const customer_id = "17";
               var token = res.body.token;
               chai
                 .request(API)
@@ -72,7 +69,6 @@ describe("Customers API", () => {
                 .send(newCustomer)
                 .end((err, res) => {
                   res.should.have.status(200);
-                  console.log("\x1b[33m%s\x1b[0m", "post customer tested");
                   res.body.should.have
                     .property("message")
                     .to.equal("Customer Created Successfully!");
@@ -86,7 +82,7 @@ describe("Customers API", () => {
 
           describe("Test PUT route", () => {
             it("it should update an customer", () => {
-              const customer_id = "3";
+              const customer_id = "8";
               const updateCustomer = {
                 firstname: "herzlia",
                 middlename: "valdez",
@@ -103,7 +99,7 @@ describe("Customers API", () => {
                 .send(updateCustomer)
                 .end((err, res) => {
                   res.should.have.status(200);
-                  console.log("\x1b[33m%s\x1b[0m", "edit customer tested");
+
                   res.body.should.have
                     .property("message")
                     .to.equal("Customer Updated Successfully!");
@@ -113,7 +109,7 @@ describe("Customers API", () => {
 
           describe("Test DELETE/:id route", () => {
             it("it should delete an customer by the given id", (done) => {
-              const customer_id = "3";
+              const customer_id = "6";
               var token = res.body.token;
               chai
                 .request(API)
@@ -121,7 +117,7 @@ describe("Customers API", () => {
                 .set("Authorization", token)
                 .end((err, res) => {
                   res.should.have.status(200);
-                  console.log("\x1b[33m%s\x1b[0m", "delete customer tested");
+
                   done();
                 });
             });

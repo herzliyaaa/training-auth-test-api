@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon --exec \"mocha -R min\"",
+  
+    "test": "mocha",
     "server": "nodemon server.js",
     "start": "concurrently \"npm run server\" \"cd client && npm run dev\""
   },

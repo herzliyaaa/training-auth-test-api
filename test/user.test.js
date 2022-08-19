@@ -24,7 +24,7 @@ describe("AUTH API", () => {
         })
         .end((err, res) => {
           res.should.have.status(200);
-          console.log("\x1b[33m%s\x1b[0m", "/register tested");
+          // console.log("\x1b[33m%s\x1b[0m", "/register tested");
           done();
         });
     });
@@ -42,7 +42,7 @@ describe("AUTH API", () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property("token");
-          console.log("\x1b[33m%s\x1b[0m", "/login tested");
+          // console.log("\x1b[33m%s\x1b[0m", "/login tested");
           var token = res.body.token;
 
           chai
@@ -53,7 +53,7 @@ describe("AUTH API", () => {
 
             .end((err, res) => {
               res.should.have.status(200);
-              console.log("\x1b[33m%s\x1b[0m", "verified the user");
+              // console.log("\x1b[33m%s\x1b[0m", "verified the user");
               done();
             });
         });
